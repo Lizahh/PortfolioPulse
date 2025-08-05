@@ -71,14 +71,6 @@ Designed as a full-stack research-to-deployment pipeline, this project simulates
 
 * Save Model: Export trained policy for inference or simulation
 
-#  Sample Output
-
-|    total_timesteps      | 6144        |
-|    policy_gradient_loss | -0.0344     |
-|    value_loss           | 7.76        |
-|    entropy_loss         | -7.09       |
-|    approx_kl            | 0.0250      |
-
 #  Future Improvements
 
 * Migrate to Gymnasium for updated API compliance
