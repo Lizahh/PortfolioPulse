@@ -1,6 +1,9 @@
 # PortfolioPulse
 Portfolio Optimization using Feature Engineering &amp; Reinforcement Learning (PPO)
 
+<img width="1920" height="1481" alt="image" src="https://github.com/user-attachments/assets/c3999208-c8de-4cc1-b2b4-e30eff0a981b" />
+
+
 # Overview
 PortfolioPulse is an intelligent, data-driven financial portfolio optimization framework that leverages cutting-edge machine learning, feature fusion, and reinforcement learning (PPO) to enhance investment strategies, improve decision-making, and maximize risk-adjusted returns.
 
