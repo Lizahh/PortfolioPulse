@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PortfolioPulse - Professional Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      --dark-gradient: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 100%);
+      --glass-bg: rgba(255, 255, 255, 0.1);
+      --glass-border: rgba(255, 255, 255, 0.2);
+      --text-primary: #ffffff;
+      --text-secondary: rgba(255, 255, 255, 0.8);
+      --text-muted: rgba(255, 255, 255, 0.6);
+      --shadow-light: 0 8px 32px rgba(0, 0, 0, 0.1);
+      --shadow-medium: 0 20px 60px rgba(0, 0, 0, 0.2);
+      --shadow-heavy: 0 30px 90px rgba(0, 0, 0, 0.3);
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      margin: 0;
+      background: var(--dark-gradient);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .header {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--glass-border);
+      padding: 25px 50px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-light);
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .header h1 {
+      font-size: 32px;
+      font-weight: 700;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-stats {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .stat-item {
+      text-align: center;
+      opacity: 0;
+      animation: slideInRight 0.8s ease-out forwards;
+    }
+
+    .stat-item:nth-child(2) { animation-delay: 0.1s; }
+    .stat-item:nth-child(3) { animation-delay: 0.2s; }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 4px;
+    }
+
+    .container {
+      padding: 40px 50px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      padding: 35px;
+      border-radius: 24px;
+      box-shadow: var(--shadow-medium);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    .card:nth-child(1) { animation-delay: 0.1s; }
+    .card:nth-child(2) { animation-delay: 0.2s; }
+    .card:nth-child(3) { animation-delay: 0.3s; }
+    .card:nth-child(4) { animation-delay: 0.4s; }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--primary-gradient);
+      transform: scaleX(0);
+      transition: transform 0.6s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-heavy);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .card h3 {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 25px;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .card-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: var(--primary-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    canvas {
+      width: 100% !important;
+      height: 280px !important;
+      border-radius: 16px;
+    }
+
+    .stats-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .stats-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .stats-list li:last-child {
+      border-bottom: none;
+    }
+
+    .stats-list li:hover {
+      background: rgba(255, 255, 255, 0.05);
+      margin: 0 -20px;
+      padding-left: 20px;
+      padding-right: 20px;
+      border-radius: 12px;
+    }
+
+    .stat-name {
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .stat-number {
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 18px;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 16px 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      color: var(--text-primary);
+      font-size: 16px;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: rgba(102, 126, 234, 0.6);
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .form-group input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .btn-primary {
+      background: var(--primary-gradient);
+      color: var(--text-primary);
+      padding: 18px 32px;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: var(--shadow-light);
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.6s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-medium);
+    }
+
+    .btn-primary:hover::before {
+      left: 100%;
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+      font-size: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      margin-top: 60px;
+    }
+
+    .footer-content {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .performance-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: rgba(16, 185, 129, 0.2);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #10b981;
+      margin-left: 12px;
+    }
+
+    .pulse {
+      width: 8px;
+      height: 8px;
+      background: #10b981;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.2); opacity: 0.7; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        padding: 20px 25px;
+      }
+      
+      .header-content {
+        flex-direction: column;
+        gap: 20px;
+      }
+      
+      .header-stats {
+        gap: 20px;
+      }
+      
+      .container {
+        padding: 30px 25px;
+      }
+      
+      .grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      
+      .card {
+        padding: 25px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-content">
+      <h1>
+        <span>💎</span>
+        PortfolioPulse
+        <div class="performance-indicator">
+          <div class="pulse"></div>
+          +5.2% Today
+        </div>
+      </h1>
+      <div class="header-stats">
+        <div class="stat-item">
+          <div class="stat-value">$127.5K</div>
+          <div class="stat-label">Total Value</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">+12.8%</div>
+          <div class="stat-label">YTD Return</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">0.89</div>
+          <div class="stat-label">Sharpe Ratio</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="grid">
+      <div class="card">
+        <h3>
+          <div class="card-icon">📈</div>
+          Performance Overview
+        </h3>
+        <canvas id="performanceChart"></canvas>
+      </div>
+      
+      <div class="card">
+        <h3>
+          <div class="card-icon">🥧</div>
+          Asset Allocation
+        </h3>
+        <canvas id="allocationChart"></canvas>
+      </div>
+      
+      <div class="card">
+        <h3>
+          <div class="card-icon">🤖</div>
+          AI Model Statistics
+        </h3>
+        <ul class="stats-list">
+          <li>
+            <span class="stat-name">Training Iterations</span>
+            <span class="stat-number">3,247</span>
+          </li>
+          <li>
+            <span class="stat-name">Entropy Loss</span>
+            <span class="stat-number">-7.09</span>
+          </li>
+          <li>
+            <span class="stat-name">KL Divergence</span>
+            <span class="stat-number">0.025</span>
+          </li>
+          <li>
+            <span class="stat-name">Value Loss</span>
+            <span class="stat-number">7.76</span>
+          </li>
+          <li>
+            <span class="stat-name">Model Accuracy</span>
+            <span class="stat-number">94.2%</span>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="card">
+        <h3>
+          <div class="card-icon">⚡</div>
+          Strategy Control Center
+        </h3>
+        <div class="form-group">
+          <label>Ticker Symbol</label>
+          <input type="text" placeholder="Enter symbol (e.g., AAPL, GOOGL)" />
+        </div>
+        <div class="form-group">
+          <label>Strategy Duration (Days)</label>
+          <input type="number" placeholder="Enter duration (e.g., 30, 90)" />
+        </div>
+        <div class="form-group">
+          <label>Investment Amount</label>
+          <input type="number" placeholder="Enter amount ($)" />
+        </div>
+        <button class="btn-primary">🚀 Execute AI Strategy</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-content">
+      <p><strong>PortfolioPulse</strong> © 2023 • Powered by Advanced Reinforcement Learning & Real-Time Market Intelligence</p>
+      <p style="margin-top: 10px; opacity: 0.7;">Built with cutting-edge AI technology for professional portfolio management</p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Enhanced performance chart with gradient and animations
+    const performanceCtx = document.getElementById("performanceChart").getContext('2d');
+    const performanceGradient = performanceCtx.createLinearGradient(0, 0, 0, 300);
+    performanceGradient.addColorStop(0, 'rgba(102, 126, 234, 0.8)');
+    performanceGradient.addColorStop(1, 'rgba(102, 126, 234, 0.1)');
+
+    new Chart(performanceCtx, {
+      type: 'line',
+      data: {
+        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"],
+        datasets: [{
+          label: "Portfolio Value ($)",
+          data: [100000, 105250, 103120, 110500, 115750, 112300, 118900, 127500],
+          borderColor: "#667eea",
+          backgroundColor: performanceGradient,
+          fill: true,
+          tension: 0.4,
+          borderWidth: 3,
+          pointBackgroundColor: "#667eea",
+          pointBorderColor: "#ffffff",
+          pointBorderWidth: 2,
+          pointRadius: 6,
+          pointHoverRadius: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          x: {
+            grid: {
+              color: 'rgba(255, 255, 255, 0.1)',
+              borderColor: 'rgba(255, 255, 255, 0.1)'
+            },
+            ticks: {
+              color: 'rgba(255, 255, 255, 0.8)',
+              font: {
+                size: 12,
+                weight: '500'
+              }
+            }
+          },
+          y: {
+            grid: {
+              color: 'rgba(255, 255, 255, 0.1)',
+              borderColor: 'rgba(255, 255, 255, 0.1)'
+            },
+            ticks: {
+              color: 'rgba(255, 255, 255, 0.8)',
+              font: {
+                size: 12,
+                weight: '500'
+              },
+              callback: function(value) {
+                return '$' + (value / 1000).toFixed(0) + 'K';
+              }
+            }
+          }
+        },
+        animation: {
+          duration: 2000,
+          easing: 'easeInOutQuart'
+        }
+      }
+    });
+
+    // Enhanced allocation chart with modern colors
+    new Chart(document.getElementById("allocationChart"), {
+      type: 'doughnut',
+      data: {
+        labels: ["AAPL", "GOOGL", "MSFT", "TSLA", "NVDA", "Cash"],
+        datasets: [{
+          data: [28, 22, 18, 12, 15, 5],
+          backgroundColor: [
+            "#667eea",
+            "#764ba2", 
+            "#f093fb",
+            "#f5576c",
+            "#4facfe",
+            "#00f2fe"
+          ],
+          borderWidth: 0,
+          hoverOffset: 10
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              color: 'rgba(255, 255, 255, 0.8)',
+              font: {
+                size: 13,
+                weight: '500'
+              },
+              padding: 20,
+              usePointStyle: true,
+              pointStyle: 'circle'
+            }
+          }
+        },
+        animation: {
+          animateRotate: true,
+          duration: 2000,
+          easing: 'easeInOutQuart'
+        }
+      }
+    });
+
+    // Add hover effects and interactions
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-8px) scale(1.02)';
+      });
+      
+      card.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0) scale(1)';
+      });
+    });
+
+    // Enhanced button click effect
+    document.querySelector('.btn-primary').addEventListener('click', function(e) {
+      // Create ripple effect
+      const ripple = document.createElement('span');
+      const rect = this.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      const x = e.clientX - rect.left - size / 2;
+      const y = e.clientY - rect.top - size / 2;
+      
+      ripple.style.width = ripple.style.height = size + 'px';
+      ripple.style.left = x + 'px';
+      ripple.style.top = y + 'px';
+      ripple.style.position = 'absolute';
+      ripple.style.background = 'rgba(255, 255, 255, 0.3)';
+      ripple.style.borderRadius = '50%';
+      ripple.style.transform = 'scale(0)';
+      ripple.style.animation = 'ripple 0.6s ease-out';
+      ripple.style.pointerEvents = 'none';
+      
+      this.appendChild(ripple);
+      
+      setTimeout(() => {
+        ripple.remove();
+      }, 600);
+    });
+
+    // Add CSS for ripple animation
+    const rippleStyle = document.createElement('style');
+    rippleStyle.textContent = `
+      @keyframes ripple {
+        to {
+          transform: scale(2);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(rippleStyle);
+  </script>
+</body>
+</html>
